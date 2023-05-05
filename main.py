@@ -23,8 +23,7 @@ class Player:
                 return True
 
         if self.profile == "aleatorio":
-            # prob_percetange = 100 * (1 / 2)  # comprar = 1 || não comprar = 1 / sum(comprar + não comprar)
-            if random.random() > 0.5:
+            if random.random() < 0.5:
                 return True
 
         return False
