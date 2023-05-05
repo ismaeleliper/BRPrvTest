@@ -23,8 +23,8 @@ class Player:
                 return True
 
         if self.profile == "aleatorio":
-            prob_percetange = 100 * (1 / 2)  # comprar = 1 || não comprar = 1 / sum(comprar + não comprar)
-            if prob_percetange == 50.0:
+            # prob_percetange = 100 * (1 / 2)  # comprar = 1 || não comprar = 1 / sum(comprar + não comprar)
+            if random.random() > 0.5:
                 return True
 
         return False
@@ -49,27 +49,27 @@ def play():
             "owner": None
         },
         {
-            "sale_price": 1000,
-            "rent_price": 250,
+            "sale_price": 100,
+            "rent_price": 25,
             "owner": None
         },
         {
-            "sale_price": 700,
+            "sale_price": 200,
             "rent_price": 59,
             "owner": None
         },
         {
-            "sale_price": 850,
+            "sale_price": 150,
             "rent_price": 60,
             "owner": None
         },
         {
-            "sale_price": 950,
+            "sale_price": 250,
             "rent_price": 78,
             "owner": None
         },
         {
-            "sale_price": 620,
+            "sale_price": 420,
             "rent_price": 45,
             "owner": None
         },
@@ -79,8 +79,8 @@ def play():
             "owner": None
         },
         {
-            "sale_price": 1100,
-            "rent_price": 100,
+            "sale_price": 110,
+            "rent_price": 10,
             "owner": None
         },
         {
@@ -94,8 +94,8 @@ def play():
             "owner": None
         },
         {
-            "sale_price": 1480,
-            "rent_price": 600,
+            "sale_price": 148,
+            "rent_price": 60,
             "owner": None
         },
         {
@@ -114,17 +114,17 @@ def play():
             "owner": None
         },
         {
-            "sale_price": 850,
+            "sale_price": 350,
             "rent_price": 90,
             "owner": None
         },
         {
-            "sale_price": 788,
+            "sale_price": 188,
             "rent_price": 55,
             "owner": None
         },
         {
-            "sale_price": 320,
+            "sale_price": 250,
             "rent_price": 58,
             "owner": None
         },
@@ -217,13 +217,13 @@ def play():
                                 it["owner"] = None
                     players_var.remove(i)
 
-    if len(players) == 1:
+    if len(players_var) == 1:
         profile = players_var[0]["Player"]
         wins_by_player_profile[profile] = wins_by_player_profile[profile] + 1
 
     how_many_rounds_end = router
 
-    return timeout, how_many_rounds_end, sorted(wins_by_player_profile)
+    return timeout, how_many_rounds_end, list(dict(sorted(wins_by_player_profile.items(), key=lambda x: x[1], reverse=True)))
 
 
 if __name__ == '__main__':
@@ -235,21 +235,21 @@ if __name__ == '__main__':
         "cauteloso": 0,
         "aleatorio": 0
     }
-    winner_profile = None
 
-    for i in range(30):
+    number_of_range = 50
+    for i in range(number_of_range):
         each_play = play()
         timeout_total += each_play[0]
         turns_around_to_end_total += each_play[1]
-        win_total_by_profile[each_play[2][0]] += 1
+        win_total_by_profile[each_play[2][0]] = win_total_by_profile[each_play[2][0]] + 1
 
     print(f"How many games end by timeout: -> {timeout_total}")
-    print(f"Avarage of turn around by game: -> {(turns_around_to_end_total/300)}")
+    print(f"Avarage of turn around by game: -> {(turns_around_to_end_total / number_of_range)}")
     print(f"""\n
     Wins percentage of each player: \n
-        impulsivo: {win_total_by_profile["impulsivo"]/300}%\n
-        exigente: {win_total_by_profile["exigente"]/300}%\n
-        cauteloso: {win_total_by_profile["cauteloso"]/300}%\n
-        aleatorio: {win_total_by_profile["aleatorio"]/300}%\n
+        impulsivo: {100 * (win_total_by_profile["impulsivo"] / number_of_range)}%\n
+        exigente: {100 * (win_total_by_profile["exigente"] / number_of_range)}%\n
+        cauteloso: {100 * (win_total_by_profile["cauteloso"] / number_of_range)}%\n
+        aleatorio: {100 * (win_total_by_profile["aleatorio"] / number_of_range)}%\n
     """)
-    print(f"The winner is {sorted(win_total_by_profile)[0]}")
+    print(f"The winner is {list(dict(sorted(win_total_by_profile.items(), key=lambda x: x[1], reverse=True)))[0]}")
